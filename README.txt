@@ -1,1 +1,2 @@
 简单的一个websocket例子，当在浏览器打开一个窗口时建立websocket连接，关闭时删除websocket连接，后台有一个死循环，可以实现主动向前端推送消息。
+需要注意的是如果使用tomcat启动需要自己添加servlet-api.jar

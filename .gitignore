@@ -1,0 +1,8 @@
+##ignore this file##
+/target/
+/.idea/
+.classpath
+.project
+.settings
+*.iml
+src/main/resources/log4j.properties

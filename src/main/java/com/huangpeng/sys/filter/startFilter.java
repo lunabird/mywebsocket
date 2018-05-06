@@ -1,7 +1,7 @@
 package com.huangpeng.sys.filter;
 
-import com.huangpeng.sys.modules.websocket.CallDemo;
-import com.huangpeng.sys.modules.websocket.MyWebSocket;
+import com.huangpeng.sys.modules.websocket.MyWebSocketServerNew;
+import com.huangpeng.sys.modules.websocket.PushMessageDemo;
 import org.java_websocket.WebSocketImpl;
 
 import javax.servlet.*;
@@ -12,20 +12,23 @@ import java.util.Timer;
 /**
  * <pre>
  * 任务：
- * 描述：
+ * 描述：startFilter是被配置在web.xml中，当tomcat启动时会执行。
+ *      当websocket启动30秒以后，开启定时任务，这个定时任务的作
+ *      用是每隔5秒向外推送一条消息。
  * 作者：@author huangpeng
  * 时间：@create 2017-12-15 上午11:11
  * 类名: startFilter
  * </pre>
  **/
 public class startFilter implements Filter {
+    MyWebSocketServerNew s ;
     /**
      * 初始化
      */
     public void init(FilterConfig fc) throws ServletException {
         this.startWebsocketOnline();
         Timer timer = new Timer();//设置30s后再启动死循环向前台推消息
-        timer.schedule(new CallDemo(),30*1000);
+        timer.schedule(new PushMessageDemo(s),30*1000);
     }
 
     /**
@@ -35,9 +38,8 @@ public class startFilter implements Filter {
         System.out.println("开始启动websocket");
         WebSocketImpl.DEBUG = false;
         int port = 8888; // 端口随便设置，只要不跟现有端口重复就可以
-        MyWebSocket s = null;
         try {
-            s = new MyWebSocket(port);
+            s = new MyWebSocketServerNew(port);
             s.start();
         } catch (UnknownHostException e) {
             System.out.println("startWebsocketOnline启动websocket失败！");
